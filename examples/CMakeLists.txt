@@ -154,3 +154,28 @@ if (DNNL_INSTALL_MODE STREQUAL "BUNDLE")
             DESTINATION examples)
     endif()
 endif()
+
+add_custom_target(
+  copy_dataset ALL
+  COMMAND
+    ${CMAKE_COMMAND} -E copy_directory
+    ${PROJECT_SOURCE_DIR}/trained_weights/vgg16_transposed_param_files
+    ${CMAKE_BINARY_DIR}/examples/vgg16_transposed_param_files
+  COMMAND
+    ${CMAKE_COMMAND} -E copy
+    ${PROJECT_SOURCE_DIR}/trained_weights/kangaroo.jpg.bin
+    ${CMAKE_BINARY_DIR}/examples/kangaroo.jpg.bin
+  COMMAND
+    ${CMAKE_COMMAND} -E copy
+    ${PROJECT_SOURCE_DIR}/trained_weights/grace_hopper_nhwc.bin
+    ${CMAKE_BINARY_DIR}/examples/grace_hopper_nhwc.bin)
+add_dependencies(models-VGG-cpp copy_dataset)
+
+
+add_custom_target(
+  run_vgg
+  COMMAND models-VGG-cpp gpu
+  COMMENT "Running VGG..."
+  USES_TERMINAL)
+
+add_dependencies(run_vgg copy_dataset)

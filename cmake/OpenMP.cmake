@@ -28,7 +28,7 @@ if (APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     # But we still want to build the library.
     set(_omp_severity "WARNING")
 else()
-    set(_omp_severity "FATAL_ERROR")
+    set(_omp_severity "WARNING")
 endif()
 
 macro(forbid_link_compiler_omp_rt)
